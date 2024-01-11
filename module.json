@@ -1,41 +1,40 @@
 {
-  "id": "module",
-  "title": "New Module",
+  "id": "pf2e-animist-spell",
+  "title": "PF2e Animist Spell",
   "description": "",
   "version": "#{VERSION}#",
   "library": "false",
   "manifestPlusVersion": "1.2.0",
   "compatibility": {
-    "minimum": 10,
-    "verified": 10,
-    "maximum": 11
+    "minimum": 11,
+    "verified": 11
   },
   "authors": [
     {
-      "name": "The League of Extraordinary FVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers",
-      "discord": "discordID#0001"
+      "name": "Ederas",
+      "url": "https://github.com/Ederas229/"
     }
   ],
   "relationships": {
-    "systems": [],
-    "requires": []
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system"
+      }
+    ],
+    "requires": [
+      {
+        "id": "pf2e-dailies",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/reonZ/pf2e-dailies/master/module.json"
+      }
+    ]
   },
   "esmodules": [
     "scripts/module.js"
   ],
-  "scripts": [
-    "scripts/lib/lib.js"
-  ],
   "styles": [
     "styles/module.css"
-  ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "languages/en.json"
-    }
   ],
   "url": "#{URL}#",
   "manifest": "#{MANIFEST}#",
@@ -47,5 +46,34 @@
       "type": "icon",
       "url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
     }
+  ],
+  "flags": {
+    "pf2e-animist-spell": {
+      "pf2e-homebrew": {
+        "spellTraits":{
+          "Apparition": "Apparition",
+          "Vessel": "Vessel"
+        }
+      }
+    }
+  },
+  "packs": [
+    {
+      "name": "apparitions",
+      "label": "Apparitions",
+      "path": "packs/apparitions",
+      "system": "pf2e",
+      "type": "Item"
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "PF2e Animist Spell",
+      "sorting": "a",
+      "packs": [
+        "apparitions"
+      ]
+    }
   ]
+
 }
