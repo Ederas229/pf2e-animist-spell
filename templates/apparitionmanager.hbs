@@ -8,7 +8,7 @@
                         <img src="{{feat.img}}" class="iconApparition">
                     </label>
 
-                    <h4>{{feat.name}}</h4>
+                    <h4 {{#if feat.flags.pf2e-animist-spell.dispersed}}class="dispersed"{{/if}}>{{feat.name}}</h4>
                     <button class="flex0" width="25" type="button" title="Attune" data-action="attune" {{#unless feat.flags.pf2e-animist-spell.dispersed}}disabled{{/unless}}>
                         <i class="fas fa-arrows-rotate"></i>
                     </button>

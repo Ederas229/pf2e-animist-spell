@@ -21,7 +21,6 @@ Hooks.once('init', async function() {
 
 Hooks.on('renderCharacterSheetPF2e', async function(sheet, html){
     if (!isAnimist(sheet.actor)) { return; }
-    console.log("tset");
     await removeCastButton(sheet.actor, html);
 
 });
