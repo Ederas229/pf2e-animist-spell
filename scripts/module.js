@@ -5,6 +5,7 @@ Hooks.once("setup", () => {
     game.modules.get('pf2e-animist-spell').api = {
         parseApparition,
         parseApparitionVessel,
+        parseLore,
         renderManager
     }
 });
@@ -22,6 +23,7 @@ Hooks.once('init', async function() {
 Hooks.on('renderCharacterSheetPF2e', async function(sheet, html){
     if (!isAnimist(sheet.actor)) { return; }
     await removeCastButton(sheet.actor, html);
+    await hideLores(sheet.actor, html);
 
 });
 
@@ -70,6 +72,17 @@ async function parseApparitionVessel (uuid){
     const spell = await fromUuid("Compendium." + UUID);
 
     return spell;
+}
+
+function parseLore (uuid) {
+    const description = fromUuidSync(uuid).description;
+    const regex = new RegExp(`[a-zA-Z]*\\sLore.*[a-zA-Z]*\\sLore`);
+
+    const match = description.match(regex);
+    const str = match[0];
+    const lores = str.split(',').map(item => item.trim());;
+    
+    return lores;
 }
 
 function getApparitionSpellId(actor, apparition){
@@ -149,6 +162,17 @@ function checkDuplicateSpell(actor, spell){
     return duplicate = getCollectionsEntry(actor).find((e) => e.slug == spell.slug);
 }
 
+function checkDuplicateLore(actor, lore){
+    const apparitions = getApparitionList(actor).filter((e) => !e.feat.getFlag('pf2e-animist-spell', 'dispersed'));
+
+    for (const apparition of apparitions){
+        if (apparition.feat.getFlag('pf2e-animist-spell', 'lores').find((e) => e == lore)){
+            return true;
+        }
+    }
+    return false;
+}
+
 function getCollectionsEntry (actor){
     return actor.spellcasting.collections.find((e) => e.id == actor.getFlag('pf2e-animist-spell', 'spellEntry'));
 }
@@ -191,6 +215,18 @@ async function removeCastButton(actor, html){
     const primarySpell = await getPrimaryFocusSpell(actor);
     html.find('[data-entry-id='+ getCollectionsEntryFocus(actor).id +']:not([data-item-id='+ primarySpell?.id +'])').find('.cast-spell').replaceWith('<div></div>');
 
+}
+
+async function hideLores(actor, html){
+    const apparitionList = getApparitionList(actor);
+
+    for (const apparition of apparitionList){
+        if (!apparition.feat.getFlag('pf2e-animist-spell', 'dispersed')) { continue; }    
+        for (const lore of apparition.feat.getFlag('pf2e-animist-spell', 'lores')){
+            if (checkDuplicateLore(actor, lore)) { continue; }
+            html.find('[value="'+lore+'"]').parent().hide();
+        }
+    }
 }
 
 function renderManager(actor){

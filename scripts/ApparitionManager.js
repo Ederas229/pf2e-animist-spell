@@ -57,7 +57,7 @@ export class ApparitionManager extends FormApplication {
     async _handleButtonClick(event) {
         const clickedElement = $(event.currentTarget);
         const action = clickedElement.data().action;
-        const apparition = clickedElement.parent()[0].id;
+        const apparition = clickedElement.parent()[0].id; //slug
         const manager = event.data.manager;
 
         switch (action){

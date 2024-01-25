@@ -89,11 +89,30 @@ const apparitionDaily = {
             const uuid = fields[field].uuid;
             const source = await utils.createFeatSource(uuid);
             const flagDisperse = {'pf2e-animist-spell': {dispersed: false}};
-            const flagPrimary = {'pf2e-animist-spell': {primary: field == 'first' ? true : false}}
-            source.flags = foundry.utils.mergeObject(flagDisperse, flagPrimary, {recursive: true})
-            
-            
+            const flagPrimary = {'pf2e-animist-spell': {primary: field == 'first' ? true : false}};
+            source.flags = foundry.utils.mergeObject(flagDisperse, flagPrimary, {recursive: true});
+
+            const lores = await game.modules.get('pf2e-animist-spell').api.parseLore(uuid).map((e) => 'Apparition : '+e);
+            const flagLore = {'pf2e-animist-spell': {lores: lores}};
+            source.flags = foundry.utils.mergeObject(source.flags, flagLore, {recursive: true});
+
             addFeat(source);
+
+            let loreProf;
+
+            if (actor.level >= 16){
+                loreProf = 3;
+            }else if(actor.level >= 8){
+                loreProf = 2;
+            }else{
+                loreProf = 1;
+            }
+
+            for (const i in lores) {
+                const loreSource = utils.createLoreSource({ name: lores[i], rank: loreProf });
+                addItem(loreSource);
+            }
+
             const spells = await game.modules.get('pf2e-animist-spell').api.parseApparition(uuid, highestRank);
             
             for (const spell of spells){
