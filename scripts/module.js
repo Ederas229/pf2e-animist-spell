@@ -213,7 +213,7 @@ async function getPrimaryFocusSpell (actor){
 async function removeCastButton(actor, html){
 
     const primarySpell = await getPrimaryFocusSpell(actor);
-    html.find('[data-entry-id='+ getCollectionsEntryFocus(actor).id +']:not([data-item-id='+ primarySpell?.id +'])').find('.cast-spell').replaceWith('<div></div>');
+    html.find('[data-entry-id='+ getCollectionsEntryFocus(actor).id +']:not([data-item-id='+ primarySpell?.id +'])').find('.cast-spell').prop('disabled', true);
 
 }
 
