@@ -15,8 +15,8 @@
  */
 
 // Import TypeScript modules
-import { registerSettings } from './settings';
-import { preloadTemplates } from './preloadTemplates';
+import { registerSettings } from './settings.js';
+import { preloadTemplates } from './preloadTemplates.js';
 
 // Initialize module
 Hooks.once('init', async () => {
