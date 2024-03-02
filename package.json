@@ -8,15 +8,6 @@
     "type": "git",
     "url": "<optionally the URL to your repository>"
   },
-  "bugs": {
-    "url": "<optionally the URL to your issues list>"
-  },
-  "contributors": [
-    {
-      "name": "<your name>",
-      "email": "<optionally your e-mail address>"
-    }
-  ],
   "type": "module",
   "scripts": {
     "build": "gulp build",
@@ -31,12 +22,13 @@
     "postinstall": "husky install"
   },
   "devDependencies": {
-    "@league-of-foundry-developers/foundry-vtt-types": "^9.280.0",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-typescript": "^11.1.6",
     "@rollup/stream": "^3.0.1",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
+    "@types/jquery": "^3.5.29",
+    "@types/node": "20.11.19",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
