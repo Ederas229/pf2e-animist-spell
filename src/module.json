@@ -1,23 +1,22 @@
 {
   "id": "pf2e-animist-spell",
-  "title": "<human readable title for pf2e-animist-spell>",
-  "description": "<description of the package>",
+  "title": "PF2e Animist Spell",
+  "description": "",
   "authors": [
     {
-      "name": "<your name>",
-      "email": "<optionally your e-mail address>",
-      "discord": "<optionally your discord username>"
+      "name": "Ederas",
+      "url": "https://github.com/Ederas229/"
     }
   ],
   "url": "This is auto replaced",
-  "license": "<please choose an appropriate license. https://choosealicense.com/ is a great place to get more information if you are unsure>",
-  "readme": "<optionally the URL to your readme>",
-  "bugs": "<optionally the URL to your issue list>",
-  "changelog": "<optionally the URL to your changelog>",
+  "license": "",
+  "readme": "",
+  "bugs": "",
+  "changelog": "",
   "version": "This is auto replaced",
   "compatibility": {
-    "minimum": "10",
-    "verified": "10"
+    "minimum": "11",
+    "verified": "11"
   },
   "scripts": [],
   "esmodules": [
@@ -26,21 +25,52 @@
   "styles": [
     "styles/pf2e-animist-spell.css"
   ],
-  "packs": [],
-  "languages": [
+  "flags": {
+    "pf2e-animist-spell": {
+      "pf2e-homebrew": {
+        "spellTraits":{
+          "Apparition": "Apparition",
+          "Vessel": "Vessel"
+        }
+      }
+    }
+  },
+  "packs": [
     {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
+      "name": "apparitions",
+      "label": "Apparitions",
+      "path": "packs/apparitions",
+      "system": "pf2e",
+      "type": "Item"
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "PF2e Animist Spell",
+      "sorting": "a",
+      "packs": [
+        "apparitions"
+      ]
     }
   ],
   "relationships": {
-    "systems": [],
-    "requires": [],
-    "conflicts": []
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system"
+      }
+    ],
+    "requires": [
+      {
+        "id": "pf2e-dailies",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/reonZ/pf2e-dailies/master/module.json"
+      }
+    ]
   },
   "socket": false,
   "manifest": "This is auto replaced",
   "download": "This is auto replaced",
   "library": false
 }
+

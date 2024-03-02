@@ -1,47 +1,74 @@
-// SPDX-FileCopyrightText: 2022 Johannes Loher
-//
-// SPDX-License-Identifier: MIT
-
-/**
- * This is your TypeScript entry file for Foundry VTT.
- * Register custom settings, sheets, and constants using the Foundry API.
- * Change this heading to be more descriptive to your module, or remove it.
- * Author: [your name]
- * Content License: [copyright and-or license] If using an existing system
- * 					you may want to put a (link to a) license or copyright
- * 					notice here (e.g. the OGL).
- * Software License: [your license] Put your desired license here, which
- * 					 determines how others may use and modify your module.
- */
-
 // Import TypeScript modules
 import { registerSettings } from './settings.js';
-import { preloadTemplates } from './preloadTemplates.js';
+import { log } from './utils.js';
+import { MODULENAME } from './const.js';
+import { AnimistActor } from './AnimistActor.js';
+import { ApparitionParser } from './Parser.js';
+import { CharacterPF2e } from '@actor/index.js';
+import { ApparitionManager } from './ApparitionManager.js';
+
+let managerUi: ApparitionManager;
 
 // Initialize module
 Hooks.once('init', async () => {
-  console.log('pf2e-animist-spell | Initializing pf2e-animist-spell');
-
-  // Assign custom classes and constants here
+  log('Initializing ' + MODULENAME);
 
   // Register custom module settings
   registerSettings();
-
-  // Preload Handlebars templates
-  await preloadTemplates();
-
-  // Register custom sheets (if any)
 });
 
-// Setup module
 Hooks.once('setup', async () => {
-  // Do anything after initialization but before
-  // ready
+  // @ts-expect-error setup module api
+  game.modules.get(MODULENAME).api = {
+    ApparitionParser,
+    renderManager,
+  };
 });
 
-// When ready
-Hooks.once('ready', async () => {
-  // Do anything once the module is ready
+Hooks.on('renderCharacterSheetPF2e', async function renderCharacterSheetHook(sheet: any, html: any): Promise<void> {
+  const actor = new AnimistActor(sheet.actor);
+  if (!actor.isAnimist()) return;
+
+  //edit the character sheet
+  actor.removeCastButton(html);
+  actor.hideLores(html);
+  actor.addManagerButton(html);
+
+  //add event listener on the manager button
+  html.on('click', '[data-action="open-apparition-manager"]', sheet, (event: any) => {
+    renderManager(event.data.actor);
+  });
 });
 
-// Add any additional hooks if necessary
+Hooks.on('preCreateChatMessage', async function (message: any) {
+  //test if the manager is open for the actor
+  if (!managerUi?.rendered) return;
+  if (!(managerUi.animistActor.actor.id === message.actor.id)) return;
+
+  //test if the actor is an animist
+  const actor = new AnimistActor(message.actor);
+  if (!actor.isAnimist()) return;
+
+  //rerender if the daily concerns apparitions
+  const regex = new RegExp(`<p><strong>Apparitions attuned<\/strong><\/p>`);
+  const match = message.content.match(regex);
+
+  if (!match) return;
+
+  renderManager(message.actor);
+});
+
+export async function renderManager(actor: CharacterPF2e) {
+  //test if there is already a manager UI stored
+  if (managerUi) {
+    //test if the correct manager is stored
+    if (managerUi.animistActor.actor.id === actor.id) {
+      managerUi.render();
+      return;
+    }
+    //close the old one if not
+    await managerUi.close();
+  }
+  //render and store a new manager instance
+  managerUi = new ApparitionManager(actor).render(true, { actor: actor });
+}

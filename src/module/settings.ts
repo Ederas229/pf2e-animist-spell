@@ -2,6 +2,14 @@
 //
 // SPDX-License-Identifier: MIT
 
+import { MODULENAME } from './const.js';
+
 export function registerSettings(): void {
-  // Register any custom module settings here
+  game.settings.register(MODULENAME, 'managerPosition', {
+    name: 'manager position',
+    scope: 'client',
+    config: false,
+    type: Object,
+    default: {},
+  });
 }

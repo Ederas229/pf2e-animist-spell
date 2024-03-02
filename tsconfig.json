@@ -19,7 +19,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "allowUnusedLabels": false,
-    "removeComments": false,
+    "removeComments": true,
     "resolveJsonModule": true,
     "useDefineForClassFields": true,
     "noErrorTruncation": true,
