@@ -1,0 +1,76 @@
+{
+  "id": "pf2e-animist-spell",
+  "title": "PF2e Animist Spell",
+  "description": "",
+  "authors": [
+    {
+      "name": "Ederas",
+      "url": "https://github.com/Ederas229/"
+    }
+  ],
+  "url": "This is auto replaced",
+  "license": "",
+  "readme": "",
+  "bugs": "",
+  "changelog": "",
+  "version": "This is auto replaced",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "scripts": [],
+  "esmodules": [
+    "module/pf2e-animist-spell.js"
+  ],
+  "styles": [
+    "styles/pf2e-animist-spell.css"
+  ],
+  "flags": {
+    "pf2e-animist-spell": {
+      "pf2e-homebrew": {
+        "spellTraits":{
+          "Apparition": "Apparition",
+          "Vessel": "Vessel"
+        }
+      }
+    }
+  },
+  "packs": [
+    {
+      "name": "apparitions",
+      "label": "Apparitions",
+      "path": "packs/apparitions",
+      "system": "pf2e",
+      "type": "Item"
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "PF2e Animist Spell",
+      "sorting": "a",
+      "packs": [
+        "apparitions"
+      ]
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system"
+      }
+    ],
+    "requires": [
+      {
+        "id": "pf2e-dailies",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/reonZ/pf2e-dailies/master/module.json"
+      }
+    ]
+  },
+  "socket": false,
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced",
+  "library": false
+}
+
