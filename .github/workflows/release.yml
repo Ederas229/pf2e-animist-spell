@@ -94,7 +94,7 @@ jobs:
 
       - name: Substitute Manifest and Download Links For Versioned Ones
         id: sub_manifest_link_version
-        uses: devops-actions/variable-substitution@v1
+        uses: devops-actions/variable-substitution
         with:
           files: 'src/${{ env.package_type }}.json'
         env:
