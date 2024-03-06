@@ -71,4 +71,10 @@ You can also link to multiple data folders by specifying multiple paths in the
 The workflow works basically the same as the workflow of the [League Basic JS Module Template], please follow the
 instructions given there.
 
+## Licensing
+
+This project is being developed under the terms of the
+[LIMITED LICENSE AGREEMENT FOR MODULE DEVELOPMENT] for Foundry Virtual Tabletop.
+
+[LIMITED LICENSE AGREEMENT FOR MODULE DEVELOPMENT]: https://foundryvtt.com/article/license/
 [League Basic JS Module Template]: https://github.com/League-of-Foundry-Developers/FoundryVTT-Module-Template
