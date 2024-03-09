@@ -62,6 +62,16 @@ Hooks.on('preCreateChatMessage', async function (message: any) {
   renderManager(message.actor);
 });
 
+Hooks.on('preCreateItem', async function (feat: any) {
+  if (feat.name === 'Apparition Attunement' && feat.isFeature) {
+    feat.updateSource({
+      'flags.core.sourceId':
+        'Compendium.pf2e-playtest-data.war-of-immortals-playtest-class-features.Item.513BswuSPSPQdX1v',
+      'system.rules': [],
+    });
+  }
+});
+
 export async function renderManager(actor: CharacterPF2e) {
   //test if there is already a manager UI stored
   if (managerUi) {
