@@ -33,13 +33,13 @@ export class AnimistActor {
       const duplicate = this.checkDuplicateSpell(spell.spell);
       if (duplicate) {
         //add the apparition to the source of the spell
-        const sources = stringArray(duplicate.getFlag('pf2e-animist-spell', 'source'));
+        const sources = stringArray(duplicate.getFlag(MODULENAME, 'source'));
         if (!sources) return;
         if (sources.find((e) => e == apparition)) {
           continue;
         }
         sources.push(apparition);
-        duplicate.setFlag('pf2e-animist-spell', 'source', sources);
+        duplicate.setFlag(MODULENAME, 'source', sources);
         continue;
       }
 
@@ -94,9 +94,9 @@ export class AnimistActor {
     if (!apparitionList) return;
 
     //get all apparitions that are not dispersed
-    const apparitions = apparitionList.filter((e) => !e?.feat?.getFlag('pf2e-animist-spell', 'dispersed'));
+    const apparitions = apparitionList.filter((e) => !e?.feat?.getFlag(MODULENAME, 'dispersed'));
     for (const apparition of apparitions) {
-      const loreFlag = stringArray(apparition.feat?.getFlag('pf2e-animist-spell', 'lores'));
+      const loreFlag = stringArray(apparition.feat?.getFlag(MODULENAME, 'lores'));
       if (!loreFlag) return;
 
       if (loreFlag.find((e) => e == lore)) {
@@ -158,7 +158,7 @@ export class AnimistActor {
     const apparitionList = this.getApparitionList();
     if (!apparitionList) return;
 
-    const apparition = apparitionList.find((e) => e?.feat?.flags['pf2e-animist-spell']?.primary);
+    const apparition = apparitionList.find((e) => e?.feat?.flags[MODULENAME]?.primary);
     if (!apparition) return;
     if (typeof apparition?.feat?.uuid !== 'string') return;
 
@@ -193,10 +193,10 @@ export class AnimistActor {
 
     for (const apparition of apparitionList) {
       //test if apparition is not dispersed
-      if (!apparition?.feat?.getFlag('pf2e-animist-spell', 'dispersed')) {
+      if (!apparition?.feat?.getFlag(MODULENAME, 'dispersed')) {
         continue;
       }
-      const loreList = stringArray(apparition.feat.getFlag('pf2e-animist-spell', 'lores'));
+      const loreList = stringArray(apparition.feat.getFlag(MODULENAME, 'lores'));
       if (!loreList) return;
       for (const lore of loreList) {
         //test if the lore come from multiple apparitions
