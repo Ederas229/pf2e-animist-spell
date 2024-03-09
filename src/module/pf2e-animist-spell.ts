@@ -26,7 +26,7 @@ Hooks.once('setup', async () => {
 });
 
 Hooks.once('ready', async () => {
-  addDaily('modules/' + MODULENAME + '/daily/apparition.js');
+  addDaily('modules/' + MODULENAME + '/daily/apparition.js', 'apparition');
 });
 
 Hooks.on('renderCharacterSheetPF2e', async function renderCharacterSheetHook(sheet: any, html: any): Promise<void> {
