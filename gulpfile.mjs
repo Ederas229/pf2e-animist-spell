@@ -26,7 +26,7 @@ const distDirectory = './dist';
 const stylesDirectory = `${sourceDirectory}/styles`;
 const stylesExtension = 'css';
 const sourceFileExtension = 'ts';
-const staticFiles = ['assets', 'fonts', 'lang', 'packs', 'templates', 'module.json'];
+const staticFiles = ['assets', 'fonts', 'lang', 'packs', 'templates', 'daily', 'module.json'];
 
 /********************/
 /*      BUILD       */

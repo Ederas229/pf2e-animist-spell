@@ -1,7 +1,7 @@
 // Import TypeScript modules
 import { registerSettings } from './settings.js';
-import { log } from './utils.js';
-import { DAILY, MODULENAME } from './const.js';
+import { addDaily, log } from './utils.js';
+import { MODULENAME } from './const.js';
 import { AnimistActor } from './AnimistActor.js';
 import { ApparitionParser } from './Parser.js';
 import { CharacterPF2e } from '@actor/index.js';
@@ -26,18 +26,7 @@ Hooks.once('setup', async () => {
 });
 
 Hooks.once('ready', async () => {
-  //get all the customs dailies
-  const customs: any = game.settings.get('pf2e-dailies', 'customDailies');
-  if (!customs) return;
-  const dailyApparitionIndex = customs.findIndex((e: any) => e.key == 'apparition');
-  //if there is already a custom daily for the apparition edit it
-  if (dailyApparitionIndex !== -1) {
-    customs.splice(dailyApparitionIndex, 1, { key: 'apparition', code: DAILY });
-  } else {
-    //else create it
-    customs.push({ key: 'apparition', code: DAILY });
-  }
-  game.settings.set('pf2e-dailies', 'customDailies', customs);
+  addDaily('modules/' + MODULENAME + '/daily/apparition.js');
 });
 
 Hooks.on('renderCharacterSheetPF2e', async function renderCharacterSheetHook(sheet: any, html: any): Promise<void> {
