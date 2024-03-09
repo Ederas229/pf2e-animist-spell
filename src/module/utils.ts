@@ -35,3 +35,20 @@ export function coerceToSpellGroupId(value: unknown): SpellSlotGroupId | null {
 export function forceObject(object: unknown): object {
   return object as object;
 }
+
+export async function addDaily(filePath: string): Promise<void> {
+  //get the code from the file
+  const code = await (await fetch(filePath)).text();
+  //get all the customs dailies
+  const customs: any = game.settings.get('pf2e-dailies', 'customDailies');
+  if (!customs) return;
+  const dailyApparitionIndex = customs.findIndex((e: any) => e.key == 'apparition');
+  //if there is already a custom daily for the apparition edit it
+  if (dailyApparitionIndex !== -1) {
+    customs.splice(dailyApparitionIndex, 1, { key: 'apparition', code: code });
+  } else {
+    //else create it
+    customs.push({ key: 'apparition', code: code });
+  }
+  game.settings.set('pf2e-dailies', 'customDailies', customs);
+}
