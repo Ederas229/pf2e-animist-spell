@@ -15,78 +15,83 @@ function getEntriesFocus(actor) {
 const apparitionDaily = {
   key: 'apparition',
   label: 'Apparition',
-  item: {
-    uuid: 'Compendium.pf2e-playtest-data.war-of-immortals-playtest-class-features.Item.513BswuSPSPQdX1v',
-    condition: ({ actor }) => getEntriesSpontaneous(actor).length >= 1 && getEntriesFocus(actor).length >= 1,
-  },
-  rows: [
+  items: [
     {
-      type: 'select',
-      slug: 'entryFocus',
-      label: 'Spellcasting Vessel Entry',
-      options: ({ actor }) => getEntriesFocus(actor).map((entry) => ({ label: entry.name, value: entry.id })),
-      condition: ({ actor }) => getEntriesFocus(actor).length > 1,
-    },
-    {
-      type: 'select',
-      slug: 'entrySpontaneous',
-      label: 'Spellcasting Apparition Entry',
-      options: ({ actor }) => getEntriesSpontaneous(actor).map((entry) => ({ label: entry.name, value: entry.id })),
-      condition: ({ actor }) => getEntriesSpontaneous(actor).length > 1,
-    },
-    {
-      type: 'drop',
-      slug: 'first',
-      label: 'First Apparition',
-      filter: {
-        type: 'feat',
-        search: {},
-      },
-    },
-    {
-      type: 'drop',
-      slug: 'second',
-      label: 'Second Apparition',
-      filter: {
-        type: 'feat',
-        search: {},
-      },
-    },
-    {
-      type: 'drop',
-      slug: 'third',
-      label: 'Third Apparition',
-      filter: {
-        type: 'feat',
-        search: {},
-      },
-      condition: ({ actor }) => hasFeat(actor, 'third-apparition'),
-    },
-    {
-      type: 'drop',
-      slug: 'fourth',
-      label: 'Fourth Apparition',
-      filter: {
-        type: 'feat',
-        search: {},
-      },
-      condition: ({ actor }) => hasFeat(actor, 'fourth-apparition'),
+      slug: 'attuned',
+      uuid: 'Compendium.pf2e-playtest-data.war-of-immortals-playtest-class-features.Item.513BswuSPSPQdX1v',
+      condition: (actor) => getEntriesSpontaneous(actor).length >= 1 && getEntriesFocus(actor).length >= 1,
     },
   ],
-  process: async ({ utils, fields, addFeat, addItem, messages, actor }) => {
-    const entryApparitionId = fields.entrySpontaneous?.value ?? getEntriesSpontaneous(actor)[0].id;
-    const entryVesselId = fields.entryFocus?.value ?? getEntriesFocus(actor)[0].id;
+  rows: (actor, items) => {
+    return [
+      {
+        type: 'select',
+        slug: 'entryFocus',
+        label: 'Spellcasting Vessel Entry',
+        options: getEntriesFocus(actor).map((entry) => ({ label: entry.name, value: entry.id })),
+        condition: getEntriesFocus(actor).length > 1,
+      },
+      {
+        type: 'select',
+        slug: 'entrySpontaneous',
+        label: 'Spellcasting Apparition Entry',
+        options: getEntriesSpontaneous(actor).map((entry) => ({ label: entry.name, value: entry.id })),
+        condition: getEntriesSpontaneous(actor).length > 1,
+      },
+      {
+        type: 'drop',
+        slug: 'first',
+        label: 'First Apparition',
+        filter: {
+          type: 'feat',
+          search: {},
+        },
+      },
+      {
+        type: 'drop',
+        slug: 'second',
+        label: 'Second Apparition',
+        filter: {
+          type: 'feat',
+          search: {},
+        },
+      },
+      {
+        type: 'drop',
+        slug: 'third',
+        label: 'Third Apparition',
+        filter: {
+          type: 'feat',
+          search: {},
+        },
+        condition: hasFeat(actor, 'third-apparition'),
+      },
+      {
+        type: 'drop',
+        slug: 'fourth',
+        label: 'Fourth Apparition',
+        filter: {
+          type: 'feat',
+          search: {},
+        },
+        condition: hasFeat(actor, 'fourth-apparition'),
+      },
+    ];
+  },
+  process: async ({ rows, addFeat, addItem, messages, actor, items }) => {
+    const entryApparitionId = rows.entrySpontaneous?.value ?? getEntriesSpontaneous(actor)[0].id;
+    const entryVesselId = rows.entryFocus?.value ?? getEntriesFocus(actor)[0].id;
     const highestRank = actor.spellcasting.collections.get(entryApparitionId).highestRank;
     const arraySpellSource = [];
 
     actor.setFlag('pf2e-animist-spell', 'spellEntry', entryApparitionId);
     actor.setFlag('pf2e-animist-spell', 'spellFocusEntry', entryVesselId);
     messages.addGroup('apparitions', undefined, 'Apparitions attuned');
-    for (const field in fields) {
+    for (const field in rows) {
       if (field == 'entryFocus' || field == 'entrySpontaneous') {
         continue;
       }
-      const uuid = fields[field].uuid;
+      const uuid = rows[field].uuid;
       const source = await utils.createFeatSource(uuid);
       const flagDisperse = { 'pf2e-animist-spell': { dispersed: false } };
       const flagPrimary = { 'pf2e-animist-spell': { primary: field == 'first' ? true : false } };
@@ -99,7 +104,7 @@ const apparitionDaily = {
       const flagLore = { 'pf2e-animist-spell': { lores: lores } };
       source.flags = foundry.utils.mergeObject(source.flags, flagLore, { recursive: true });
 
-      addFeat(source);
+      addFeat(source, items.attuned);
 
       let loreProf;
 
@@ -125,7 +130,7 @@ const apparitionDaily = {
           continue;
         }
 
-        const spellSource = await utils.createSpellSource(spell.spell.uuid);
+        const spellSource = await utils.createSpellSource(spell.spell.uuid, { identifier: entryApparitionId });
 
         spellSource.system.location.value = entryApparitionId;
         spellSource.system.traits.value.push('Apparition');
@@ -133,17 +138,15 @@ const apparitionDaily = {
           spellSource.system.location.signature = true;
           spellSource.system.location.heightenedLevel = spell.rank;
         }
-        spellSource.flags = {
-          'pf2e-animist-spell': {
-            source: [source.system.slug],
-          },
+        spellSource.flags['pf2e-animist-spell'] = {
+          source: [source.system.slug],
         };
 
         arraySpellSource.push(spellSource);
       }
 
       const vesselSpell = await game.modules.get('pf2e-animist-spell').api.ApparitionParser.vesselSpell(uuid);
-      const vesselSpellSource = await utils.createSpellSource(vesselSpell.uuid);
+      const vesselSpellSource = await utils.createSpellSource(vesselSpell.uuid, { identifier: entryVesselId });
       vesselSpellSource.system.location.value = entryVesselId;
       vesselSpellSource.system.traits.value.push('Vessel');
       addItem(vesselSpellSource);

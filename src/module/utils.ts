@@ -45,10 +45,10 @@ export async function addDaily(filePath: string, key: string): Promise<void> {
   const dailyApparitionIndex = customs.findIndex((e: any) => e.key == key);
   //if there is already a custom daily for the apparition edit it
   if (dailyApparitionIndex !== -1) {
-    customs.splice(dailyApparitionIndex, 1, { key: key, code: code });
+    customs.splice(dailyApparitionIndex, 1, { key: key, code: code, schema: '3.0.0' });
   } else {
     //else create it
-    customs.push({ key: key, code: code });
+    customs.push({ key: key, code: code, schema: '3.0.0' });
   }
   game.settings.set('pf2e-dailies', 'customDailies', customs);
 }
