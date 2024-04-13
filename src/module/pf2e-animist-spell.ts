@@ -54,7 +54,7 @@ Hooks.on('preCreateChatMessage', async function (message: any) {
   if (!actor.isAnimist()) return;
 
   //rerender if the daily concerns apparitions
-  const regex = new RegExp(`<p><strong>Apparitions attuned<\/strong><\/p>`);
+  const regex = new RegExp(`<strong>Gained the temporary apparitions</strong>`);
   const match = message.content.match(regex);
 
   if (!match) return;
