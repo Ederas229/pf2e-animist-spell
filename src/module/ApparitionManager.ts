@@ -1,6 +1,7 @@
 import { CharacterPF2e } from '@actor/index.js';
 import { AnimistActor } from './AnimistActor.js';
 import { forceObject } from './utils.js';
+import { MODULENAME } from './const.js';
 
 export class ApparitionManager extends Application {
   animistActor: AnimistActor;
@@ -11,7 +12,7 @@ export class ApparitionManager extends Application {
     super();
 
     this.savePosition = foundry.utils.debounce(() => {
-      game.settings.set('pf2e-animist-spell', 'managerPosition', this.position);
+      game.settings.set(MODULENAME, 'managerPosition', this.position);
     }, 100);
     this.animistActor = new AnimistActor(actor);
   }
@@ -23,7 +24,7 @@ export class ApparitionManager extends Application {
       height: 'auto',
       width: '500',
       id: 'apparition-manager',
-      template: './modules/pf2e-animist-spell/templates/apparitionmanager.hbs',
+      template: `./modules/${MODULENAME}/templates/apparitionmanager.hbs`,
       title: 'Apparitions Manager',
       actor: '',
     };
@@ -38,7 +39,7 @@ export class ApparitionManager extends Application {
       super.render(force);
       return this;
     }
-    const position: object = forceObject(game.settings.get('pf2e-animist-spell', 'managerPosition'));
+    const position: object = forceObject(game.settings.get(MODULENAME, 'managerPosition'));
     const mergedOptions = foundry.utils.mergeObject(options, position);
     super.render(force, mergedOptions);
 
@@ -76,12 +77,12 @@ export class ApparitionManager extends Application {
         break;
       }
       case 'disperse': {
-        await apparitionFeat.setFlag('pf2e-animist-spell', 'dispersed', true);
+        await apparitionFeat.setFlag(MODULENAME, 'dispersed', true);
         manager.animistActor.removeSpell(apparition);
         break;
       }
       case 'attune': {
-        await apparitionFeat.setFlag('pf2e-animist-spell', 'dispersed', false);
+        await apparitionFeat.setFlag(MODULENAME, 'dispersed', false);
         manager.animistActor.addApparitionSpell(apparition);
         break;
       }
