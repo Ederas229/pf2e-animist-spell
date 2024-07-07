@@ -48,7 +48,7 @@ export class AnimistActor {
       //set all the data
       const data = {
         'system.location.value': this.getCollectionsEntry()?.id,
-        'flags.pf2e-animist-spell.source': [apparition],
+        [`flags.${MODULENAME}.source`]: [apparition],
         'flags.pf2e-dailies.temporary': true,
         'system.traits.value': spell.spell.system.traits.value,
       };
