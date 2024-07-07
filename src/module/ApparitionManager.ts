@@ -24,7 +24,7 @@ export class ApparitionManager extends Application {
       height: 'auto',
       width: '500',
       id: 'apparition-manager',
-      template: './modules/pf2e-animist-spell/templates/apparitionmanager.hbs',
+      template: `./modules/${MODULENAME}/templates/apparitionmanager.hbs`,
       title: 'Apparitions Manager',
       actor: '',
     };
