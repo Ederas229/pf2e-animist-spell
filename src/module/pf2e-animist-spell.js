@@ -41,7 +41,12 @@ Hooks.on('renderCharacterSheetPF2e', async function renderCharacterSheetHook(she
   actor.addManagerButton(html);
 
   //add event listener on the manager button
-  html.on('click', '[data-action="open-apparition-manager"]', sheet, (event) => {
+  html.on('click', '.open-manager', sheet, (event) => {
+    event.stopPropagation();
+    if (managerUi?.rendered && managerUi?.animistActor.actor.id === event.data.actor.id) {
+      managerUi.close();
+      return;
+    }
     renderManager(event.data.actor);
   });
 });
@@ -79,12 +84,12 @@ export async function renderManager(actor) {
   if (managerUi) {
     //test if the correct manager is stored
     if (managerUi.animistActor.actor.id === actor.id) {
-      managerUi.render();
+      managerUi.render({ force: true });
       return;
     }
     //close the old one if not
     await managerUi.close();
   }
   //render and store a new manager instance
-  managerUi = new ApparitionManager(actor).render(true, { actor: actor });
+  managerUi = new ApparitionManager(actor).render({ force: true, actor: actor });
 }
