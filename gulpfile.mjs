@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // SPDX-FileCopyrightText: 2022 Johannes Loher
 // SPDX-FileCopyrightText: 2022 David Archibald
 //
@@ -25,8 +26,8 @@ const sourceDirectory = './src';
 const distDirectory = './dist';
 const stylesDirectory = `${sourceDirectory}/styles`;
 const stylesExtension = 'css';
-const sourceFileExtension = 'ts';
-const staticFiles = ['assets', 'fonts', 'lang', 'packs', 'templates', 'daily', 'module.json'];
+const sourceFileExtension = 'js';
+const staticFiles = ['assets', 'fonts', 'lang', 'packs', 'templates', 'module.json'];
 
 /********************/
 /*      BUILD       */
