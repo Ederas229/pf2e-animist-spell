@@ -8,8 +8,8 @@
     height: 40px;
 }
 
-.primarySelect {
-    flex: 0.2;
+.flexrow > .primarySelect {
+    flex: none;
 }
 
 :not(input[type=radio]:checked) + label>img {
@@ -21,9 +21,8 @@ input[type=radio]:checked + label>img {
     box-shadow: 0 0 3px 3px rgb(0, 0, 0);
 }
 
-.input-hidden {
+.flexrow > .input-hidden {
     display: none;
-    width: 0;
 }
 
 .dispersed {

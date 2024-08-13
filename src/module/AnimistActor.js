@@ -171,7 +171,7 @@ export class AnimistActor {
       '[data-container-id=' + collectionId + ']>.spell-ability-data>.statistic-values',
     );
     spellAbilityData.after(
-      '<button type="button" class="prepare-spells blue" data-action="open-apparition-manager">Manage Apparitions</button>',
+      '<button type="button" class="prepare-spells blue open-manager" data-action="open-apparition-manager">Manage Apparitions</button>',
     );
   }
 

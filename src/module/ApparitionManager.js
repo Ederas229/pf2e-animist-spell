@@ -1,7 +1,9 @@
 import { AnimistActor } from './AnimistActor.js';
 import { MODULENAME } from './const.js';
 
-export class ApparitionManager extends Application {
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+export class ApparitionManager extends HandlebarsApplicationMixin(ApplicationV2) {
   animistActor;
 
   savePosition;
@@ -15,78 +17,63 @@ export class ApparitionManager extends Application {
     this.animistActor = new AnimistActor(actor);
   }
 
-  static get defaultOptions() {
-    const defaults = super.defaultOptions;
-
-    const overrides = {
+  static DEFAULT_OPTIONS = {
+    id: 'apparition-manager',
+    position: {
+      width: 'auto',
       height: 'auto',
-      width: '500',
-      id: 'apparition-manager',
+    },
+    actor: '',
+    actions: {
+      primary: ApparitionManager.primary,
+      disperse: ApparitionManager.disperse,
+      attune: ApparitionManager.attune,
+    },
+  };
+
+  static PARTS = {
+    manager: {
       template: `./modules/${MODULENAME}/templates/apparitionmanager.hbs`,
-      title: 'Apparitions Manager',
-      actor: '',
-    };
+    },
+  };
 
-    const mergedOptions = foundry.utils.mergeObject(defaults, overrides);
-
-    return mergedOptions;
+  get title() {
+    return 'Apparitions Manager';
   }
 
-  render(force = true, options) {
-    if (!options) {
-      super.render(force);
-      return this;
-    }
-    const position = game.settings.get(MODULENAME, 'managerPosition');
+  render(options) {
+    const position = { position: game.settings.get(MODULENAME, 'managerPosition') };
     const mergedOptions = foundry.utils.mergeObject(options, position);
-    super.render(force, mergedOptions);
+    super.render(mergedOptions);
 
     return this;
   }
 
-  setPosition({ left, top, width }) {
-    super.setPosition({ left, top, width });
+  setPosition({ left, top }) {
+    super.setPosition({ left, top });
     this.savePosition();
-    return { left, top, width };
+    return { left, top };
   }
 
-  getData() {
+  _prepareContext() {
     return { attunement: this.animistActor.getApparitionList() };
   }
 
-  activateListeners(html) {
-    super.activateListeners(html);
-    html.on('click', '[data-action]', { manager: this }, this._handleButtonClick);
+  static async primary(event, target) {
+    this.animistActor.changePrimary(target.parentElement.id);
   }
 
-  async _handleButtonClick(event) {
-    //eslint-disable-next-line no-undef
-    const clickedElement = $(event.currentTarget);
-    const action = clickedElement.data().action;
-    const apparition = clickedElement.parent()[0].id; //slug
-    const manager = event.data.manager;
-    const apparitionFeat = manager.animistActor.getApparitionFromActor(apparition)?.feat;
+  static async disperse(event, target) {
+    const apparitionFeat = this.animistActor.getApparitionFromActor(target.parentElement.id)?.feat;
+    await apparitionFeat.setFlag(MODULENAME, 'dispersed', true);
+    this.animistActor.removeSpell(target.parentElement.id);
+    this.render({ force: true });
+  }
 
-    if (!apparitionFeat) return;
-
-    switch (action) {
-      case 'primary': {
-        await manager.animistActor.changePrimary(apparition);
-
-        break;
-      }
-      case 'disperse': {
-        await apparitionFeat.setFlag(MODULENAME, 'dispersed', true);
-        manager.animistActor.removeSpell(apparition);
-        break;
-      }
-      case 'attune': {
-        await apparitionFeat.setFlag(MODULENAME, 'dispersed', false);
-        manager.animistActor.addApparitionSpell(apparition);
-        break;
-      }
-    }
-
-    manager.render();
+  static async attune(event, target) {
+    const apparitionFeat = this.animistActor.getApparitionFromActor(target.parentElement.id)?.feat;
+    await apparitionFeat.setFlag(MODULENAME, 'dispersed', false);
+    this.animistActor.addApparitionSpell(target.parentElement.id);
+    this.render({ force: true });
   }
 }
