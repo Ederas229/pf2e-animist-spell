@@ -83,8 +83,6 @@ export const apparitionDaily = [
       const highestRank = actor.spellcasting.collections.get(entryApparitionId).highestRank;
       const arraySpellSource = [];
 
-      console.log('test', MODULENAME);
-
       actor.setFlag(MODULENAME, 'spellEntry', entryApparitionId);
       actor.setFlag(MODULENAME, 'spellFocusEntry', entryVesselId);
       messages.addGroup('apparitions', undefined, 'Apparitions attuned');
@@ -100,10 +98,8 @@ export const apparitionDaily = [
         flagPrimary[MODULENAME] = { primary: field == 'first' ? true : false };
         source.flags = foundry.utils.mergeObject(flagDisperse, flagPrimary, { recursive: true });
 
-        const lores = await game.modules
-          .get(MODULENAME)
-          .api.ApparitionParser.lores(uuid)
-          .map((e) => 'Apparition : ' + e);
+        const baseLores = await game.modules.get(MODULENAME).api.ApparitionParser.lores(uuid);
+        const lores = baseLores.map((e) => 'Apparition : ' + e);
         const flagLore = {};
         flagLore[MODULENAME] = { lores: lores };
         source.flags = foundry.utils.mergeObject(source.flags, flagLore, { recursive: true });

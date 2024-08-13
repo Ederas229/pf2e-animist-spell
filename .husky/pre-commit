@@ -1,0 +1,2 @@
+npm run lint
+# test script will run every time you commit
