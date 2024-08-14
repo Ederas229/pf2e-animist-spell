@@ -1,11 +1,10 @@
 {
-  "id": "pf2e-animist-spell",
-  "title": "PF2e Animist Spell",
+  "id": "pf2e-apparitions-manager",
+  "title": "PF2e Apparitions Manager",
   "description": "",
   "authors": [
     {
-      "name": "Ederas",
-      "url": "https://github.com/Ederas229/"
+      "name": "Ederas"
     }
   ],
   "url": "This is auto replaced",
@@ -20,10 +19,10 @@
   },
   "scripts": [],
   "esmodules": [
-    "module/pf2e-animist-spell.js"
+    "module/pf2e-apparitions-manager.js"
   ],
   "styles": [
-    "styles/pf2e-animist-spell.css"
+    "styles/pf2e-apparitions-manager.css"
   ],
   "flags": {
     "pf2e-animist-spell": {
@@ -46,7 +45,7 @@
   ],
   "packFolders": [
     {
-      "name": "PF2e Animist Spell",
+      "name": "PF2e Apparitions Manager",
       "sorting": "a",
       "packs": [
         "apparitions"

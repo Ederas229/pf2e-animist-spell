@@ -5,7 +5,7 @@
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default () => ({
-  input: 'src/module/pf2e-animist-spell.js',
+  input: 'src/module/pf2e-apparitions-manager.js',
   output: {
     dir: 'dist/module',
     format: 'es',
