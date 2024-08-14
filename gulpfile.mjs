@@ -21,7 +21,7 @@ import rollupConfig from './rollup.config.mjs';
 /*  CONFIGURATION   */
 /********************/
 
-const packageId = 'pf2e-animist-spell';
+const packageId = 'pf2e-apparitions-manager';
 const sourceDirectory = './src';
 const distDirectory = './dist';
 const stylesDirectory = `${sourceDirectory}/styles`;

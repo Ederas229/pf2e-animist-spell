@@ -1,1 +1,1 @@
-export const MODULENAME = 'pf2e-animist-spell';
+export const MODULENAME = 'pf2e-apparitions-manager';
