@@ -25,7 +25,7 @@
     "styles/pf2e-apparitions-manager.css"
   ],
   "flags": {
-    "pf2e-animist-spell": {
+    "pf2e-apparitions-manager": {
       "pf2e-homebrew": {
         "spellTraits":{
           "Apparition": "Apparition",
